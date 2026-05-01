@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TruckingApp.Server.Data;
 using TruckingApp.Server.Data.Entities;
-using System.Security.Claims;
+using TruckingApp.Server.Models.Orders;
 
 namespace TruckingApp.Server.Controllers;
 
@@ -22,30 +23,60 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+    public async Task<ActionResult<IEnumerable<OrderResponse>>> GetOrders()
     {
+        var userId = GetCurrentUserId();
+        if (userId is null)
+        {
+            return Unauthorized();
+        }
 
-        return await context.Orders
-                            .AsNoTracking()
-                            .OrderByDescending(s => s.CreatedAt)
-                            .ToListAsync();
+        var orders = await context.Orders
+                                  .AsNoTracking()
+                                  .Where(order => order.CreatedBy == userId)
+                                  .OrderByDescending(order => order.CreatedAt)
+                                  .ToListAsync();
+
+        return orders.Select(OrderResponse.FromOrder).ToList();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Order>> GetById(int id)
+    public async Task<ActionResult<OrderResponse>> GetById(int id)
     {
-        var order = await context.Orders.FindAsync(id);
-        return order == null ? NotFound() : order;
+        var userId = GetCurrentUserId();
+        if (userId is null)
+        {
+            return Unauthorized();
+        }
+
+        var order = await context.Orders
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(order => order.ID == id && order.CreatedBy == userId);
+
+        return order is null ? NotFound() : OrderResponse.FromOrder(order);
     }
 
-    [HttpPost("create-order")]
-    public async Task<ActionResult<Order>> CreateOrder(Order order)
+    [HttpPost]
+    public async Task<ActionResult<OrderResponse>> CreateOrder(OrderRequest dto)
     {
+        var userId = GetCurrentUserId();
+        if (userId is null)
+        {
+            return Unauthorized();
+        }
 
-        order.CreatedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var order = Order.Create(dto.SenderCity, dto.SenderAddress, dto.ReceiverCity, dto.ReceiverAddress, dto.Weight, dto.PickupDate, userId);
         context.Orders.Add(order);
         await context.SaveChangesAsync();
+
         logger.LogInformation("Заказ {orderNumber} был создан пользователем {userId}", order.OrderNumber, order.CreatedBy);
-        return CreatedAtAction(nameof(CreateOrder), new { id = order.ID }, order);
+
+        var response = OrderResponse.FromOrder(order);
+        return CreatedAtAction(nameof(GetById), new { id = order.ID }, response);
+    }
+
+    private string? GetCurrentUserId()
+    {
+        return User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }
