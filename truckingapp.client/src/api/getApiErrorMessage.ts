@@ -15,9 +15,7 @@ export function getApiErrorMessage(error: unknown, fallback: string) {
     return fallback;
   }
 
-  const firstValidationError = data.errors
-    ? Object.values(data.errors).flat()[0]
-    : undefined;
+  const firstValidationError = data.errors ? Object.values(data.errors).flat()[0] : undefined;
 
   return data.detail ?? firstValidationError ?? data.message ?? data.title ?? fallback;
 }

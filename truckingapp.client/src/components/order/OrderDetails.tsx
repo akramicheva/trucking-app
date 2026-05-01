@@ -52,15 +52,15 @@ export const OrderDetails: React.FC = () => {
             </button>
 
             <div className="bg-white border-2 border-gray-100 rounded-3xl shadow-xl overflow-hidden">
-                <div className="bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-900 p-8 text-white rounded-t-3xl shadow-lg relative overflow-hidden">
+                <div className="bg-navy-gradient p-8 text-white rounded-t-3xl shadow-lg relative overflow-hidden">
                     <div className="absolute -top-10 -right-10 w-40 h-40 bg-violet-600/20 rounded-full blur-3xl"></div>
 
                     <div className="relative z-10">
                         <h1 className="text-3xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-violet-200">
                             Детали заказа
                         </h1>
-                        <p className="text-violet-400 font-mono text-lg mt-2 flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.8)]"></span>
+                        <p className="text-цршеу font-mono text-lg mt-2 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(139,92,246,0.8)]"></span>
                             {order.orderNumber}
                         </p>
                     </div>

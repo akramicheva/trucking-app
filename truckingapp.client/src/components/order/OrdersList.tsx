@@ -54,9 +54,9 @@ export const OrdersList: React.FC = () => {
 
                     <Link
                         to="/create"
-                        className="flex items-center gap-2 bg-white border-2 border-slate-800 text-slate-800 hover:bg-indigo-600 hover:text-white font-bold px-6 py-3 rounded-xl transition-all active:scale-95"
+                        className="flex items-center gap-2 bg-gray-50 border-2 border-transparent text-gray-400 hover:bg-blue-600 hover:border-blue-600 hover:text-white font-bold px-6 py-3 rounded-xl transition-all active:scale-95 shadow-sm hover:shadow-lg"
                     >
-                        <span>+ НОВЫЙ ЗАКАЗ</span>
+                        <span>НОВЫЙ ЗАКАЗ</span>
                     </Link>
                 </div>
             </div>
@@ -109,7 +109,7 @@ export const OrdersList: React.FC = () => {
 
                         <Link
                             to={`/order/${order.id}`}
-                            className="flex items-center justify-center gap-2 w-full py-3 mt-6 bg-gray-50 text-gray-400 border-2 border-transparent rounded-xl opacity-70 scale-[0.98] transition-all duration-500 ease-out group-hover:opacity-100 group-hover:scale-100 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 group-hover:shadow-lg"
+                            className="bg-blue-button"
                         >
                             <span className="font-black text-sm tracking-wide">ПОДРОБНЕЕ</span>
                             <svg className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

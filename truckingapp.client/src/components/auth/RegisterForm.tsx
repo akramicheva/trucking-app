@@ -41,9 +41,9 @@ export const RegisterForm: React.FC = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
             <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-                <div className="bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-900 p-8 text-white rounded-t-3xl shadow-lg relative overflow-hidden">
+                <div className="bg-navy-gradient p-8 text-white rounded-t-3xl shadow-lg relative overflow-hidden">
                     <h2 className="text-2xl font-black uppercase tracking-tight">Регистрация</h2>
-                    <p className="text-slate-400 text-sm mt-1">Создайте аккаунт для управления перевозками</p>
+                    <p className="text-sm mt-1">Создайте аккаунт для управления перевозками</p>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-5">
@@ -98,8 +98,8 @@ export const RegisterForm: React.FC = () => {
                     <button
                         disabled={isLoading}
                         type="submit"
-                        className={`w-full py-4 rounded-2xl font-black text-white shadow-lg transition-all transform active:scale-95
-                            ${isLoading ? 'bg-gray-400' : 'bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-900 hover:bg-slate-900 shadow-slate-200'}`}
+                        className={`w-full py-3 px-4 rounded-lg font-bold text-white transition-all shadow-md
+                            ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 active:scale-95'}`}
                     >
                         {isLoading ? 'СОЗДАНИЕ...' : 'ЗАРЕГИСТРИРОВАТЬСЯ'}
                     </button>

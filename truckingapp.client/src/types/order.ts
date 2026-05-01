@@ -10,7 +10,4 @@ export interface Order {
   createdAt?: string;
 }
 
-export type CreateOrderDto = Pick<
-  Order,
-  'senderCity' | 'senderAddress' | 'receiverCity' | 'receiverAddress' | 'weight' | 'pickupDate'
->;
+export type CreateOrderDto = Pick<Order,'senderCity' | 'senderAddress' | 'receiverCity' | 'receiverAddress' | 'weight' | 'pickupDate'>;
