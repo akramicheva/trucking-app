@@ -1,20 +1,16 @@
 export interface Order {
-
   id: number;
-  orderNumber: string; 
- 
+  orderNumber: string;
   senderCity: string;
   senderAddress: string;
-  
-
   receiverCity: string;
   receiverAddress: string;
-  
-  
   weight: number;
-  pickupDate: string; 
+  pickupDate: string;
   createdAt?: string;
- 
 }
 
-export type CreateOrderDto = Omit<Order, 'id' | 'orderNumber' | 'createdAt'>;
+export type CreateOrderDto = Pick<
+  Order,
+  'senderCity' | 'senderAddress' | 'receiverCity' | 'receiverAddress' | 'weight' | 'pickupDate'
+>;

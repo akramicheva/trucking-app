@@ -2,26 +2,34 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import api from '../../api/axiosInstance';
 import { useNavigate, Link } from 'react-router-dom';
+import { getApiErrorMessage } from '../../api/getApiErrorMessage';
+
+interface RegisterFormValues {
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
 
 export const RegisterForm: React.FC = () => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterFormValues>();
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    // Следим за значением пароля для сравнения с подтверждением
     const password = watch("password");
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: RegisterFormValues) => {
         setIsLoading(true);
+        setError(null);
         try {
             await api.post('/register', {
                 email: data.email,
                 password: data.password
             });
-            
-            alert('Регистрация успешна! Теперь вы можете войти.');
+
             navigate('/login');
-        } catch (err: any) {
+        } catch (err) {
+            setError(getApiErrorMessage(err, 'Не удалось зарегистрироваться'));
         } finally {
             setIsLoading(false);
         }
@@ -33,18 +41,23 @@ export const RegisterForm: React.FC = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
             <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-                {/* Декоративная шапка в стиле Indigo */}
                 <div className="bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-900 p-8 text-white rounded-t-3xl shadow-lg relative overflow-hidden">
                     <h2 className="text-2xl font-black uppercase tracking-tight">Регистрация</h2>
                     <p className="text-slate-400 text-sm mt-1">Создайте аккаунт для управления перевозками</p>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-5">
+                    {error && (
+                        <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
+                            {error}
+                        </div>
+                    )}
+
                     <div>
                         <label className={labelClass}>Email</label>
-                        <input 
+                        <input
                             type="email"
-                            {...register("email", { 
+                            {...register("email", {
                                 required: "Email обязателен",
                                 pattern: { value: /^\S+@\S+$/i, message: "Некорректный формат email" }
                             })}
@@ -56,9 +69,9 @@ export const RegisterForm: React.FC = () => {
 
                     <div>
                         <label className={labelClass}>Пароль</label>
-                        <input 
+                        <input
                             type="password"
-                            {...register("password", { 
+                            {...register("password", {
                                 required: "Придумайте пароль",
                                 minLength: { value: 6, message: "Минимум 6 символов" }
                             })}
@@ -70,9 +83,9 @@ export const RegisterForm: React.FC = () => {
 
                     <div>
                         <label className={labelClass}>Подтвердите пароль</label>
-                        <input 
+                        <input
                             type="password"
-                            {...register("confirmPassword", { 
+                            {...register("confirmPassword", {
                                 required: "Повторите пароль",
                                 validate: value => value === password || "Пароли не совпадают"
                             })}
@@ -82,9 +95,9 @@ export const RegisterForm: React.FC = () => {
                         {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message as string}</p>}
                     </div>
 
-                    <button 
+                    <button
                         disabled={isLoading}
-                        type="submit" 
+                        type="submit"
                         className={`w-full py-4 rounded-2xl font-black text-white shadow-lg transition-all transform active:scale-95
                             ${isLoading ? 'bg-gray-400' : 'bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-900 hover:bg-slate-900 shadow-slate-200'}`}
                     >
