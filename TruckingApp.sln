@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TruckingApp", "TruckingApp", "{6C04823B-6C2B-E969-9AC0-E3DC80A14773}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TruckingApp.Server", "TruckingApp\TruckingApp.Server\TruckingApp.Server.csproj", "{18B11935-C069-4491-84FE-47C2C4572A61}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "truckingapp.client", "TruckingApp\truckingapp.client\truckingapp.client.esproj", "{1CF00E12-880B-4EE1-ADC5-6BF68C9C8625}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Debug|x64.Build.0 = Debug|Any CPU
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Debug|x86.Build.0 = Debug|Any CPU
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Release|x64.ActiveCfg = Release|Any CPU
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Release|x64.Build.0 = Release|Any CPU
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Release|x86.ActiveCfg = Release|Any CPU
+		{18B11935-C069-4491-84FE-47C2C4572A61}.Release|x86.Build.0 = Release|Any CPU
+		{1CF00E12-880B-4EE1-ADC5-6BF68C9C8625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CF00E12-880B-4EE1-ADC5-6BF68C9C8625}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1CF00E12-880B-4EE1-ADC5-6BF68C9C8625}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1CF00E12-880B-4EE1-ADC5-6BF68C9C8625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CF00E12-880B-4EE1-ADC5-6BF68C9C8625}.Release|x64.ActiveCfg = Release|Any CPU
+		{1CF00E12-880B-4EE1-ADC5-6BF68C9C8625}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{18B11935-C069-4491-84FE-47C2C4572A61} = {6C04823B-6C2B-E969-9AC0-E3DC80A14773}
+		{1CF00E12-880B-4EE1-ADC5-6BF68C9C8625} = {6C04823B-6C2B-E969-9AC0-E3DC80A14773}
+	EndGlobalSection
+EndGlobal
