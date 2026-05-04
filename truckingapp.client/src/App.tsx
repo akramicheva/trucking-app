@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { LoginForm }  from './components/auth/LoginForm.tsx';
+import { LoginForm } from './components/auth/LoginForm.tsx';
 import { RegisterForm } from './components/auth/RegisterForm.tsx';
 import { NewOrderForm } from './components/order/NewOrderForm.tsx';
 import { OrdersList } from './components/order/OrdersList.tsx';
@@ -20,7 +20,6 @@ function App() {
                 </Routes>
             </Router>
         </div>
-        
     );
 }
 

@@ -5,35 +5,32 @@ namespace TruckingApp.Server.Logging
 {
     public class GlobalExceptionHandler : IExceptionHandler
     {
-        private readonly ILogger<GlobalExceptionHandler> _logger;
+        private readonly ILogger<GlobalExceptionHandler> logger;
 
         public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
         {
-            _logger = logger;
+            this.logger = logger;
         }
 
         public async ValueTask<bool> TryHandleAsync(
-            HttpContext httpContext, 
-            Exception exception, 
+            HttpContext httpContext,
+            Exception exception,
             CancellationToken cancellationToken)
         {
-            // 1. Логируем ошибку с деталями запроса
-            _logger.LogError(exception, "Произошла необработанная ошибка: {Message}", exception.Message);
+            logger.LogError(exception, "Произошла необработанная ошибка: {Message}", exception.Message);
 
-            // 2. Подготавливаем ответ для фронтенда (React)
             var problemDetails = new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
                 Title = "Server Error",
-                Detail = exception.Message // В продакшене лучше скрывать детали
+                Detail = "Внутренняя ошибка сервера. Попробуйте повторить запрос позже."
             };
 
             httpContext.Response.StatusCode = problemDetails.Status.Value;
 
-            // 3. Отправляем JSON
             await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
-            return true; // Ошибка обработана
+            return true;
         }
     }
 }

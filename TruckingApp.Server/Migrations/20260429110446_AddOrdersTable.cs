@@ -19,14 +19,14 @@ namespace TruckingApp.Server.Migrations
                     ID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OrderNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    SenderCity = table.Column<string>(type: "text", nullable: false),
-                    SenderAddress = table.Column<string>(type: "text", nullable: false),
-                    ReceiverCity = table.Column<string>(type: "text", nullable: false),
-                    ReceiverAddress = table.Column<string>(type: "text", nullable: false),
+                    SenderCity = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    SenderAddress = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    ReceiverCity = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    ReceiverAddress = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Weight = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     PickupDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(450)", maxLength: 450, nullable: false)
                 },
                 constraints: table =>
                 {
