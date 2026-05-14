@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/axiosInstance';
 import { getApiErrorMessage } from '../../api/getApiErrorMessage';
 import { Order } from '../../types/order';
+import { CARGO_TYPE_LABELS } from '../../types/order.ts';
 import { formatDate } from '../../utils/formatDate';
 
 export const OrderDetails: React.FC = () => {
@@ -83,11 +84,17 @@ export const OrderDetails: React.FC = () => {
                     <div className="grid grid-cols-2 gap-10 border-t pt-10">
                         <section>
                             <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Вес</h3>
-                            <p className="text-2xl font-black">{order.weight} кг</p>
+                            <p className="text-2xl font-black">{order.weight} кг ({CARGO_TYPE_LABELS[order.cargoType]}) </p>
                         </section>
                         <section>
                             <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Дата забора</h3>
                             <p className="text-2xl font-black">{formatDate(order.pickupDate)}</p>
+                        </section>
+                    </div>
+                    <div className="grid grid-cols-2">
+                        <section>
+                            <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Цена</h3>
+                            <p className="text-2xl font-black">{order.price} руб.</p>
                         </section>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Trucking.Domain;
 
 namespace TruckingApp.Server.Data.Entities
 {
@@ -44,12 +45,16 @@ namespace TruckingApp.Server.Data.Entities
         [MaxLength(450)]
         public string CreatedBy { get; private set; } = string.Empty;
 
+        [Required]
+        public CargoType CargoType { get; private set; } = CargoType.Standard;
+
         public static Order Create(
             string senderCity,
             string senderAddress,
             string receiverCity,
             string receiverAddress,
             decimal weight,
+            CargoType cargoType,
             DateOnly pickupDate,
             string createdBy)
         {
@@ -66,6 +71,7 @@ namespace TruckingApp.Server.Data.Entities
                 ReceiverCity = NormalizeRequired(receiverCity, nameof(receiverCity)),
                 ReceiverAddress = NormalizeRequired(receiverAddress, nameof(receiverAddress)),
                 Weight = weight,
+                CargoType = cargoType,
                 PickupDate = pickupDate.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc),
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = NormalizeRequired(createdBy, nameof(createdBy))

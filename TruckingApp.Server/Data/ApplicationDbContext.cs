@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TruckingApp.Server.Data.Entities;
+using Trucking.Domain;
 
 namespace TruckingApp.Server.Data
 {
@@ -45,7 +46,20 @@ namespace TruckingApp.Server.Data
                 entity.Property(order => order.CreatedBy)
                     .HasMaxLength(450)
                     .IsRequired();
+
+                entity.Property(e => e.CargoType)
+                    .HasConversion(
+                        v => v.ToString(), 
+                        v => ParseCargoType(v)
+                    );
             });
         }
+        private static CargoType ParseCargoType(string value) => value switch
+        {
+            "Fragile" => CargoType.Fragile,
+            "Hazardous" => CargoType.Hazardous,
+            "Refrigerated" => CargoType.Refrigerated,
+            _ => CargoType.Standard
+        };
     }
 }

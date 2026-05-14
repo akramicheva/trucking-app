@@ -18,7 +18,7 @@ public class CargoService: ICargoService
 
     public async Task<Order> CreateOrder(OrderRequest dto, string userId)
     {
-        var order = Order.Create(dto.SenderCity, dto.SenderAddress, dto.ReceiverCity, dto.ReceiverAddress, dto.Weight, dto.PickupDate, userId);
+        var order = Order.Create(dto.SenderCity, dto.SenderAddress, dto.ReceiverCity, dto.ReceiverAddress, dto.Weight, dto.CargoType, dto.PickupDate, userId);
         context.Orders.Add(order);
         await context.SaveChangesAsync();
 

@@ -1,3 +1,4 @@
+using Trucking.Domain;
 using TruckingApp.Server.Data.Entities;
 
 namespace TruckingApp.Server.Models.Orders;
@@ -10,10 +11,16 @@ public sealed record OrderResponse(
     string ReceiverCity,
     string ReceiverAddress,
     decimal Weight,
+    CargoType CargoType,
+    decimal Price,
     DateOnly PickupDate,
     DateTime CreatedAt)
 {
     public static OrderResponse FromOrder(Order order)
+    {
+        return FromOrder(order, 0.0m);
+    }
+    public static OrderResponse FromOrder(Order order, decimal price)
     {
         var pickupDate = DateOnly.FromDateTime(EnsureUtc(order.PickupDate));
 
@@ -25,6 +32,8 @@ public sealed record OrderResponse(
             order.ReceiverCity,
             order.ReceiverAddress,
             order.Weight,
+            order.CargoType,
+            price,
             pickupDate,
             EnsureUtc(order.CreatedAt));
     }

@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using TruckingApp.Server.Services;
 using TruckingApp.Server.Data;
 using TruckingApp.Server.Logging;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +21,14 @@ builder.Services.AddProblemDetails();
 
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddControllers();
+builder.Services.AddControllers()    
+                .AddJsonOptions(options =>
+                {
+                     // Включаем встроенный метод распаковки тегов без полей в строки
+                    var fsharpOptions = JsonFSharpOptions.Default().WithUnionUnwrapFieldlessTags(); // Превращает "Standard" в CargoType.Standard;
+
+                    options.JsonSerializerOptions.Converters.Add(new JsonFSharpConverter(fsharpOptions));
+                });;
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -33,6 +42,8 @@ builder.Services.AddIdentityCore<ApplicationUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
     .AddApiEndpoints();
+
+builder.Services.AddScoped<ICargoService, CargoService>();
 
 try
 {

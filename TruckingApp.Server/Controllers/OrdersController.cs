@@ -1,10 +1,10 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TruckingApp.Server.Data;
-using TruckingApp.Server.Data.Entities;
 using TruckingApp.Server.Models.Orders;
+using TruckingApp.Server.Services;
+using Trucking.Domain;
 
 namespace TruckingApp.Server.Controllers;
 
@@ -13,12 +13,13 @@ namespace TruckingApp.Server.Controllers;
 [Authorize]
 public class OrdersController : ControllerBase
 {
-    private readonly ApplicationDbContext context;
+
+    private readonly ICargoService cargoService;
     private readonly ILogger<OrdersController> logger;
 
-    public OrdersController(ApplicationDbContext dbContext, ILogger<OrdersController> logger)
+    public OrdersController(ICargoService cargoService, ILogger<OrdersController> logger)
     {
-        context = dbContext;
+        this.cargoService = cargoService;
         this.logger = logger;
     }
 
@@ -31,13 +32,9 @@ public class OrdersController : ControllerBase
             return Unauthorized();
         }
 
-        var orders = await context.Orders
-                                  .AsNoTracking()
-                                  .Where(order => order.CreatedBy == userId)
-                                  .OrderByDescending(order => order.CreatedAt)
-                                  .ToListAsync();
+        var orders = await cargoService.GetOrders(userId);
 
-        return orders.Select(OrderResponse.FromOrder).ToList();
+        return orders.Select(o => OrderResponse.FromOrder(o, 0.0m)).ToList();
     }
 
     [HttpGet("{id}")]
@@ -49,11 +46,24 @@ public class OrdersController : ControllerBase
             return Unauthorized();
         }
 
-        var order = await context.Orders
-                                 .AsNoTracking()
-                                 .FirstOrDefaultAsync(order => order.ID == id && order.CreatedBy == userId);
+        var order = await cargoService.GetById(id, userId);
+        if (order != null)
+        {
+            var route = new RouteInfo(
+                distanceKm: 450.5m, 
+                isInternational: false
+            );
 
-        return order is null ? NotFound() : OrderResponse.FromOrder(order);
+            var cargo = new Cargo(
+                weightKg: order.Weight, 
+                type: CargoType.Fragile // Discriminated Union в C# выглядит как иерархия классов
+            );
+
+            var price = cargoService.GetPrice(cargo, route);                         
+            logger.LogInformation("Цена заказа {orderNumber} составила: {userId} рублей", order.OrderNumber, price);
+            return OrderResponse.FromOrder(order, price);
+        }
+        return NotFound();
     }
 
     [HttpPost]
@@ -65,12 +75,7 @@ public class OrdersController : ControllerBase
             return Unauthorized();
         }
 
-        var order = Order.Create(dto.SenderCity, dto.SenderAddress, dto.ReceiverCity, dto.ReceiverAddress, dto.Weight, dto.PickupDate, userId);
-        context.Orders.Add(order);
-        await context.SaveChangesAsync();
-
-        logger.LogInformation("Заказ {orderNumber} был создан пользователем {userId}", order.OrderNumber, order.CreatedBy);
-
+        var order = await cargoService.CreateOrder(dto, userId);
         var response = OrderResponse.FromOrder(order);
         return CreatedAtAction(nameof(GetById), new { id = order.ID }, response);
     }

@@ -4,6 +4,7 @@ import api from '../../api/axiosInstance.ts';
 import { getApiErrorMessage } from '../../api/getApiErrorMessage';
 import { Order } from '../../types/order';
 import { formatDate } from '../../utils/formatDate';
+import { CARGO_TYPE_LABELS } from '../../types/order.ts';
 
 export const OrdersList: React.FC = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -99,7 +100,7 @@ export const OrdersList: React.FC = () => {
                         <div className="mt-6 pt-4 border-t border-gray-50 flex justify-between items-center">
                             <div>
                                 <div className="text-xs text-gray-400 font-bold uppercase">Вес</div>
-                                <div className="text-sm font-black text-gray-700">{order.weight} кг</div>
+                                <div className="text-sm font-black text-gray-700">{order.weight} кг ({CARGO_TYPE_LABELS[order.cargoType]})</div>
                             </div>
                             <div className="text-right">
                                 <div className="text-xs text-gray-400 font-bold uppercase">Дата</div>

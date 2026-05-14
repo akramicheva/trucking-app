@@ -1,16 +1,19 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller  } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosInstance';
 import { getApiErrorMessage } from '../../api/getApiErrorMessage';
 import { CreateOrderDto, Order } from '../../types/order';
 import { getTodayInputValue } from '../../utils/formatDate';
+//import { CargoType } from '../../types/order.ts';
+import { CargoTypeSelect } from './CargoTypeSelect';
 
 export const NewOrderForm: React.FC = () => {
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<CreateOrderDto>();
+    const { register, handleSubmit, control, formState: { errors, isSubmitting } } = useForm<CreateOrderDto>();
     const navigate = useNavigate();
     const [error, setError] = React.useState<string | null>(null);
     const minPickupDate = getTodayInputValue();
+    //const [cargoType, setCargoType] = useState<CargoType>('Standard');
 
     const onSubmit = async (data: CreateOrderDto) => {
         setError(null);
@@ -87,6 +90,15 @@ export const NewOrderForm: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
                     <div className={sectionTitle}>Характеристики</div>
+
+                    <Controller
+                        name="cargoType"
+                        control={control}
+                        render={({ field }) => (
+                            <CargoTypeSelect value={field.value} onChange={field.onChange} />
+                        )}
+                        />
+
                     <div>
                         <label className={labelClass}>Вес груза (кг)</label>
                         <input

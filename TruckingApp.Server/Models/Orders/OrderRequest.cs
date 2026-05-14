@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Trucking.Domain;
 
 namespace TruckingApp.Server.Models.Orders;
 
@@ -19,6 +20,8 @@ public sealed class OrderRequest : IValidatableObject
     [Required]
     [StringLength(200)]
     public string ReceiverAddress { get; init; } = string.Empty;
+    
+    public CargoType CargoType { get; init; } = CargoType.Standard;
 
     public decimal Weight { get; init; }
 
