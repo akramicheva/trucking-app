@@ -3,7 +3,7 @@
 Приложение для управления грузоперевозками.
 
 ## Стек технологий
-- **Backend:** ASP.NET Core 9, Identity API, Entity Framework Core
+- **Backend:** ASP.NET Core 9, Identity API, Entity Framework Core, F# для расчета стоимости грузоперевозок
 - **Frontend:** React, Axios (с интерцепторами для Bearer-токенов), Tailwind CSS
 - **Database:** Postgres
 - **Logging:**  Serilog
